@@ -1,9 +1,17 @@
 <div class="col-md-12">
-<!--User: {{ getCurrentUser().name }}<br>-->
-User: {{ getCurrentUser()._id }}
+Welcome, {{ getCurrentUser().name }}!
 <br>
-Backend:
+<p>Here are your polls!</p>
 <br>
-Polls: {{ polls }}
+<!--{{ polls }}-->
+<div ng-repeat="poll in polls">
+    <ul>
+        <li ng-repeat="p in poll">
+             {{ p }}
+             <br>
+             {{ poll.question }}
+        </li>
+    </ul>
+</div>
 <br>
 </div>
