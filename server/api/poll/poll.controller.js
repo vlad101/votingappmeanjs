@@ -14,7 +14,7 @@ exports.index = function(req, res) {
 
 // Get polls by User Id
 exports.showByUserId = function(req, res) {
-  Poll.find({"user_id" : require('mongoose').Types.ObjectId(req.params.userId)}, function (err, polls) {
+  Poll.find({"user_id" : require('mongoose').Types.ObjectId(req.params.id)}, function (err, polls) {
     if(err) { return handleError(res, err); }
     return res.json(polls);
   });
@@ -22,11 +22,10 @@ exports.showByUserId = function(req, res) {
 
 // Get a single poll
 exports.show = function(req, res) {
-  Poll.findById(req.params.id, function (err, poll) {
+  Poll.findById(require('mongoose').Types.ObjectId(req.params.id), function (err, poll) {
     if(err) { return handleError(res, err); }
     if(!poll) { return res.status(404).send('Not Found'); }
     return res.json(poll);
-    require('mongoose').Types.ObjectId(req.params.id)
   });
 };
 

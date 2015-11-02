@@ -7,7 +7,7 @@ angular.module('workspaceApp')
     $scope.getCurrentUser = Auth.getCurrentUser;
     
     if($scope.isLoggedIn()) {
-	    $http.get('/api/polls/' +  $scope.getCurrentUser()._id).success(function(polls) {
+	    $http.get('/api/polls/user/' +  $scope.getCurrentUser()._id).success(function(polls) {
 	      $scope.polls = polls;
 	    });
 	}
