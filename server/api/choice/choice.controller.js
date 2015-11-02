@@ -12,6 +12,15 @@ exports.index = function(req, res) {
 };
 
 // Get a single choice
+exports.showByPollId = function(req, res) {
+  Choice.find({"poll_id" : require('mongoose').Types.ObjectId(req.params.id)}, function (err, choice) {
+    if(err) { return handleError(res, err); }
+    if(!choice) { return res.status(404).send('Not Found'); }
+    return res.json(choice);
+  });
+};
+
+// Get a single choice
 exports.show = function(req, res) {
   Choice.findById(req.params.id, function (err, choice) {
     if(err) { return handleError(res, err); }
