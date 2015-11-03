@@ -1,0 +1,54 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <!--<h1>Voting App!</h1>-->
+    <!--<p class="lead">Welcome to Voting Application!</p>-->
+    <h5>Voting App!</h5>
+    <h5>Welcome to Voting Application!</h5>
+    <img src="assets/images/vote.jpg" height="42" width="42" alt="Voting App">
+  </div>
+</header>
+
+<div class="container" ng-show="isLoggedIn() && getCurrentUser()._id == poll.user_id">
+      <div class="row">
+    	<div class="col-md-12" >
+    		<h5 ng-show="!pollId.length">--- Something Went Wrong ---</h5>
+    		<br>
+    		<h2>{{ poll.question }}</h2>
+    		
+    	   <!-- Add choice input form -->
+            <form role="form" ng-submit="addChoice()">
+              <div class="row">
+                <div class="input-group">
+                  <input type="text" name="choice" ng-model="addChoiceForm.choice" placeholder="Add Choice" class="form-control" required>
+                  <span class="input-group-btn">
+                    <input type="submit" class="btn btn-primary" value="Add">
+                  </span>
+                </div>
+              </div>
+            </form>
+            <br>
+            
+           <!-- Choices list -->
+           <p class="input-group" ng-repeat="choice in choices">
+              <input type="text" ng-model="choice.choice_text" class="form-control">
+              <span class="input-group-btn">
+                <button class="btn btn-success" ng-click="updateChoice(choice)" aria-label="Save">Save</button>
+                <button class="btn btn-danger" ng-click="removeChoice(choice, $index)" aria-label="Remove">Delete</button>
+              </span>
+           </p>
+      </div>
+    </div>
+    <button class="btn btn-default" ng-click="back()" aria-label="Back">Back</button>
+</div>
+<div class="container" ng-show="!isLoggedIn()">
+  <p>Must be Logged In!</p>
+</div>
+<footer class="footer">
+  <div class="container">
+      <p>Angular Fullstack v2.1.1 |
+        <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
+         <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
+  </div>
+</footer>

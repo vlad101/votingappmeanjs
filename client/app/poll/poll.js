@@ -3,8 +3,20 @@
 angular.module('workspaceApp')
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/poll', {
+      .when('/polls/:userId/all', {
         templateUrl: 'app/poll/poll.html',
         controller: 'PollCtrl'
-      });
+      })
+      .when('/polls/all', {
+        templateUrl: 'app/poll/poll.html',
+        controller: 'PollCtrl'
+      })
+      .when('/polls/:pollId', {
+        templateUrl: 'app/poll/viewpoll.html',
+        controller: 'PollCtrl'
+      })
+      .when('/polls/:pollId/edit', {
+        templateUrl: 'app/poll/editpoll.html',
+        controller: 'PollCtrl'
+      })
   });
