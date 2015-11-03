@@ -26,25 +26,70 @@ angular.module('workspaceApp')
 	      $scope.choices = choices;
 	    });
 	    
+	    // Add choice
 	    $scope.addChoice = function () {
 	      
 	      if(!$scope.addChoiceForm.choice)
 	        return;
 	      
-        var choice = {
-          "poll_id" : $scope.pollId,
-          "choice_text": $scope.addChoiceForm.choice,
-          "vote_count" : 0,
-          "active" : true
-        };
-        
-        $http.post("/api/choices",choice)
-        .then(function successCallback(response) {
-            $scope.choices.push(response.data);
-          }, function errorCallback(response) {alert("Could not add choice, try again!");});
-        $scope.addChoiceForm.choice = "";
-    
-      };
-      
-		}
+	        var choice = {
+	          "poll_id" : $scope.pollId,
+	          "choice_text": $scope.addChoiceForm.choice,
+	          "vote_count" : 0,
+	          "active" : true
+	        };
+	        
+	        $http.post("/api/choices", choice)
+	        .then(function successCallback(response) {
+	            $scope.choices.push(response.data);
+	          }, function errorCallback(response) {alert("Could not add choice, try again!");});
+	        $scope.addChoiceForm.choice = "";
+	    
+	      };
+
+	    // Add choice
+	    $scope.addChoice = function () {
+	      
+	      if(!$scope.addChoiceForm.choice)
+	        return;
+	      
+	        var choice = {
+	          "poll_id" : $scope.pollId,
+	          "choice_text": $scope.addChoiceForm.choice,
+	          "vote_count" : 0,
+	          "active" : true
+	        };
+	        
+	        $http.post("/api/choices", choice)
+	        .then(function successCallback(response) {
+	            $scope.choices.push(response.data);
+	          }, function errorCallback(response) { alert("Could not add choice, try again!"); });
+	        $scope.addChoiceForm.choice = "";
+	    
+	      };
+
+	    // Update choice
+        $scope.updateChoice = function (choice) {
+
+	      if(!choice.choice_text)
+	        return;
+
+            $http.put("/api/choices/" + choice._id, choice)
+              .then(function successCallback(response) {}, 
+            function errorCallback(response) { alert("Could not update choice, try again!"); });
+      	};
+
+	    // Delete choice
+        $scope.removeChoice = function (choice, index) {
+
+	      if(!choice.choice_text)
+	        return;
+
+            $http.delete("/api/choices/" + choice._id)
+              .then(function successCallback(response) {
+              	$scope.choices.splice(index, 1);
+              }, function errorCallback(response) { alert("Could not delete choice, try again!"); });
+      	};
+
+	}
   });
