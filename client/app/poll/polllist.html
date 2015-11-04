@@ -11,8 +11,8 @@
 		<span class="poll-item">
         		<button ng-show="getCurrentUser()._id == poll.user_id" class="btn-xs btn-success" ng-click="go(poll._id)" aria-label="Update">Update</button>
        	    <button ng-show="getCurrentUser()._id == poll.user_id" class="btn-xs btn-danger" ng-click="removePoll(poll, $index)" aria-label="Remove">Delete</button>
-       	    <button ng-show="getCurrentUser()._id == poll.user_id" class="btn-xs btn-default" aria-label="{{ poll.question }}" disabled = "disabled">{{ poll.question }}</button>
-       	    [Public URL: <a href="/polls/{{ poll._id }}">{{ poll.question }}</a>]
+       	    <button class="btn-xs btn-default" aria-label="{{ poll.question }}" disabled = "disabled">{{ poll.question }}</button>
+       	    <br>[Public URL: <a href="/polls/{{ poll._id }}">http://{{ host }}/polls/{{ poll._id }}</a>]
   		<br><br>
   	</span>
 	</div>

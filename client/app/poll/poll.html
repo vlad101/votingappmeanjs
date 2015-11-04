@@ -1,0 +1,82 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-include="'components/main/header.html'"></div>
+
+<div class="container">
+    <div class="row">
+    	<h5 ng-show="!pollId.length">--- Something Went Wrong ---</h5>
+    	<!--authenticated user who created the poll can edit it-->
+        <div class="col-lg-12" ng-show="isLoggedIn() && !publicUrl">
+
+    		<!--Authenticated poll creator view-->
+    		<div id="poll" ng-show="getCurrentUser()._id == poll.user_id">
+    		 
+        	   <!-- Add poll title update input form -->  
+    		  <h3 class="text-center page-header">Edit Poll</h3>
+    		  <h4>Edit Poll Title</h4>
+                <form role="form" ng-submit="updatePoll(poll)">
+                  <div class="row">
+                    <div class="input-group">
+                      <input type="text" ng-model="poll.question" class="form-control" required>
+                      <span class="input-group-btn">
+                        <input type="submit" class="btn btn-primary" value="Update">
+                      </span>
+                    </div>
+                  </div>
+                </form>
+                <br>
+    		    
+        	   <!-- Add choice input form -->
+        	    <h4>Edit Choices</h4>
+                <form role="form" ng-submit="addChoice()">
+                  <div class="row">
+                    <div class="input-group">
+                      <input type="text" name="choice" ng-model="addChoiceForm.choice" placeholder="Add Choice" class="form-control" required>
+                      <span class="input-group-btn">
+                        <input type="submit" class="btn btn-primary" value="Add">
+                      </span>
+                    </div>
+                  </div>
+                </form>
+                <br>
+                
+               <!-- Choices list -->
+               <p class="input-group" ng-repeat="choice in choices">
+                  <input type="text" ng-model="choice.choice_text" class="form-control" required>
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" ng-click="updateChoice(choice)" aria-label="Update">Update</button>
+                    <button class="btn btn-danger" ng-click="removeChoice(choice, $index)" aria-label="Remove">Delete</button>
+                  </span>
+               </p>
+            </div>
+            
+            <!--Authenticated not poll creator-->
+            <div id="poll" ng-show="getCurrentUser()._id != poll.user_id">
+        	   <!-- Poll title -->  
+    		   <h3 class="text-center page-header">Edit Poll</h3>
+    		    <h2>{{ poll.question }}</h2>
+    		    
+               <!-- Choices list -->
+               <p ng-repeat="choice in choices">
+                   {{ choice.choice_text }}
+               </p>
+            </div>
+        </div>
+        
+    	<!-- Authenticated user who did not create poll and not authenticated users can view poll -->
+        <div class="col-lg-12" ng-show="!isLoggedIn() || publicUrl">
+          <h3 class="text-center page-header">View Poll</h3>
+          
+            <!--Poll question-->
+    		<h2>{{ poll.question }}</h2>
+    		
+           <!-- Choices list -->
+           <p ng-repeat="choice in choices">
+               {{ choice.choice_text }}
+           </p>      
+        </div>
+    </div>
+    <br>
+    <button class="btn btn-default" ng-click="back()" aria-label="Back">Back</button>
+</div>
+
+<div ng-include="'components/main/footer.html'"></div>

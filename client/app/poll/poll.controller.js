@@ -5,7 +5,8 @@ angular.module('workspaceApp')
     
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.getCurrentUser = Auth.getCurrentUser;
-    
+    $scope.host = $location.host();
+    $scope.publicUrl = true;
 
     // view all polls by user id
     if($location.path().endsWith('/all')) {
@@ -69,8 +70,20 @@ angular.module('workspaceApp')
     if($scope.isLoggedIn()) {
 	      if($location.path().endsWith('/edit')) {   // edit poll by poll id
 	      
+	      $scope.publicUrl = false;
+	      
+		    // Update poll
+	        $scope.updatePoll = function (poll) {
+
+		      if(!poll.question)
+		        return;
+
+	            $http.put("/api/polls/" + poll._id, poll)
+	              .then(function successCallback(response) {}, 
+	            function errorCallback(response) { alert("Could not update poll title, try again!"); });
+	      	};
+	      
 		    // Add choice
-		            
 		    // Form add choice
 	      $scope.addChoiceForm = {
 	        choice: ""
