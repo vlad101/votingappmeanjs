@@ -1,0 +1,29 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-include="'components/main/header.html'"></div>
+
+<div class="container">
+  <div class="row">
+		<!--<h4>{{ getCurrentUser().name }}'s Poll List</h4><br>-->
+    <div class="col-lg-12" ng-show="polls.length">
+      <h3 class="text-center page-header">Poll List</h3>
+    </div>
+	<div ng-if="isLoggedIn()" ng-repeat="poll in polls">
+		<span class="poll-item">
+        	<button class="btn-xs btn-success" ng-click="go(poll._id)" aria-label="Update">Update</button>
+       	    <button class="btn-xs btn-danger" ng-click="removePoll(poll, $index)" aria-label="Remove">Delete</button>
+       	    <button class="btn-xs btn-default" aria-label="{{ poll.question }}" disabled = "disabled">{{ poll.question }}</button>
+       	    [Public URL: <a href="/polls/{{ poll._id }}">{{ poll.question }}</a>]
+  		<br><br>
+	</div>
+	<div ng-if="!isLoggedIn()" ng-repeat="poll in polls">
+		<span class="poll-item">
+			<a href="/polls/{{ poll._id }}">{{ poll.question }}</a>
+		</span>
+	</div>
+	<h4 ng-show="!polls.length">--- No polls created yet ---</h4>
+  </div>
+  <br>
+  <button class="btn btn-default" ng-click="back()" aria-label="Back">Back</button>
+</div>
+
+<div ng-include="'components/main/footer.html'"></div>

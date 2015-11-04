@@ -1,7 +1,19 @@
 'use strict';
 
 angular.module('workspaceApp')
-  .controller('MainCtrl', function ($scope, $http) {
+  .controller('MainCtrl', function ($scope, $http, $location, Auth) {
+    
+    $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.userId = $scope.getCurrentUser()._id;
+
+    // Button ng-click to go to specific path
+    $scope.go = function (path) {
+      $location.path(path);
+    };
+
+    /*
+    Default text Not yet implemented
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
@@ -19,4 +31,5 @@ angular.module('workspaceApp')
     $scope.deleteThing = function(thing) {
       $http.delete('/api/things/' + thing._id);
     };
+    */
   });

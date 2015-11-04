@@ -4,11 +4,11 @@ angular.module('workspaceApp')
   .config(function ($routeProvider) {
     $routeProvider
       .when('/polls/:userId/all', {
-        templateUrl: 'app/poll/poll.html',
+        templateUrl: 'app/poll/polllist.html',
         controller: 'PollCtrl'
       })
       .when('/polls/all', {
-        templateUrl: 'app/poll/poll.html',
+        templateUrl: 'app/poll/polllist.html',
         controller: 'PollCtrl'
       })
       .when('/polls/:pollId', {

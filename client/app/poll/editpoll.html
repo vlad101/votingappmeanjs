@@ -1,19 +1,13 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-
-<header class="hero-unit" id="banner">
-  <div class="container">
-    <!--<h1>Voting App!</h1>-->
-    <!--<p class="lead">Welcome to Voting Application!</p>-->
-    <h5>Voting App!</h5>
-    <h5>Welcome to Voting Application!</h5>
-    <img src="assets/images/vote.jpg" height="42" width="42" alt="Voting App">
-  </div>
-</header>
+<div ng-include="'components/main/header.html'"></div>
 
 <div class="container" ng-show="isLoggedIn() && getCurrentUser()._id == poll.user_id">
-      <div class="row">
+    <div class="row">
     	<div class="col-md-12" >
     		<h5 ng-show="!pollId.length">--- Something Went Wrong ---</h5>
+        <div class="col-lg-12" ng-show="poll.length">
+          <h3 class="text-center page-header">Edit Poll</h3>
+        </div>
     		<br>
     		<h2>{{ poll.question }}</h2>
     		
@@ -40,15 +34,11 @@
            </p>
       </div>
     </div>
+    <br>
     <button class="btn btn-default" ng-click="back()" aria-label="Back">Back</button>
 </div>
 <div class="container" ng-show="!isLoggedIn()">
   <p>Must be Logged In!</p>
 </div>
-<footer class="footer">
-  <div class="container">
-      <p>Angular Fullstack v2.1.1 |
-        <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
-         <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
-  </div>
-</footer>
+
+<div ng-include="'components/main/footer.html'"></div>

@@ -12,5 +12,6 @@ router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
+router.delete('/poll/:pollId', controller.destroyByPollId);
 
 module.exports = router;

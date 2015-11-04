@@ -63,6 +63,23 @@ exports.destroy = function(req, res) {
   });
 };
 
+// Deletes a choice by poll id from the DB.
+// exports.destroyByPollId = function(req, res) {
+//   Choice.find({poll_id:req.params.pollId}, function (err, choice) {
+//     if(err) { return handleError(res, err); }
+//   }).remove().exec();;
+// };
+
+// Deletes a choice by poll id from the DB.
+exports.destroyByPollId = function(req, res) {
+    Choice.find({poll_id:req.params.pollId}, function (err, choice) {
+      if(err) { return handleError(res, err); }
+    }).remove(function(err) {
+      if(err) { return handleError(res, err); }
+      return res.status(204).send('No Content');
+  });
+};
+
 function handleError(res, err) {
   return res.status(500).send(err);
 }
