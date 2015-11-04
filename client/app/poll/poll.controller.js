@@ -10,10 +10,19 @@ angular.module('workspaceApp')
     // view all polls by user id
     if($location.path().endsWith('/all')) {
         if($scope.isLoggedIn()) {
-    	    $http.get('/api/polls/user/' +  $scope.getCurrentUser()._id).success(function(polls) {
-    	      $scope.polls = polls;
-    	    });
-
+        	
+        	// Get polls by random user id through url
+	    	if($routeParams.userId) {
+	    	    $http.get('/api/polls/user/' +  $routeParams.userId).success(function(polls) {
+	    	      $scope.polls = polls;
+	    	    });
+	    	} else {
+	        	// Get polls by current user id
+	        	$http.get('/api/polls/user/' +  $scope.getCurrentUser()._id).success(function(polls) {
+		    	      $scope.polls = polls;
+		    	});
+	    	}
+	    	
 		   // Button ng-click to go to specific path
 		    // ** special case ng-click inside ng-repeat **
 			$scope.go = function (pollId) {
@@ -41,7 +50,7 @@ angular.module('workspaceApp')
         }
     } 
 
-    	// get poll id from the url
+    	// get poll id from the url (logged in and not logged in user)
     if($routeParams.pollId) {
       	$scope.pollId = $routeParams.pollId;
   	

@@ -5,11 +5,11 @@
   <div class="row" ng-show="isLoggedIn()">
       <div class="col-lg-12">
         <h3 class="text-center page-header">Dashboard</h3>
-        <h4 class="text-center page-header" >What Would you like to do?</h4>
+        <h4 class="text-center" >What Would you like to do?</h4>
       </div>
 
       <div class="text-center col-lg-12">
-        <button class="btn btn-primary" ng-click="go('/polls/{{ userId }}/all')" aria-label="View Polls">View Polls</button>
+        <button class="btn btn-primary" ng-click="go('/polls/all')" aria-label="View Polls">View Polls</button>
         <button class="btn btn-success" ng-click="" aria-label="Add Poll">Add Poll</button>
       </div>
   </div>
