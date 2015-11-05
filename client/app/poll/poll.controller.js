@@ -1,5 +1,15 @@
 'use strict';
 
+/*
+Method determines whether a url string ends 
+with the specific path, returning true or false as appropriate.
+*/
+String.prototype.endsWith = function(str)
+{
+	var lastIndex = this.lastIndexOf(str);
+	return (lastIndex !== -1) && (lastIndex + str.length === this.length);
+}
+
 angular.module('workspaceApp')
   .controller('PollCtrl', function ($scope, $routeParams, $http, $location, Auth) {
     
@@ -8,7 +18,7 @@ angular.module('workspaceApp')
     $scope.host = $location.host();
     $scope.publicUrl = true;
     $scope.pollAddUrl = false;
-
+	
    // Button ng-click to go to specific path
     // ** special case ng-click inside ng-repeat **
 	$scope.go = function (pollId) {
