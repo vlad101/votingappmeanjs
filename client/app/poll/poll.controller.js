@@ -80,6 +80,39 @@ angular.module('workspaceApp')
   	    $http.get('/api/choices/poll/' +  $scope.pollId).success(function(choices) {
   	      $scope.choices = choices;
   	    });
+
+		// Update choice
+        $scope.submitChoice = function (choice) {
+
+        	if(!choice) {
+	        	console.log("could not submit choice!!!");
+        	} else {
+	        	console.log(choice);
+	        	/*
+					var update = {};
+					update['readersNum.' + index] = 1; // update now has property like `readersNum.3`
+					Posts.update({"readerID":readerID},{$inc: update},{upsert:false,safe:true}, function(err){ console.log(err); });
+	        	*/
+
+	        	/*
+					Model.findOne({ name: 'borne' }, function (err, doc){
+					  doc.name = 'jason borne';
+					  doc.visits.$inc();
+					  doc.save();
+					});
+	        	*/
+	        }
+	     //  if(!choice.choice_text)
+	     //    return;
+
+      //       $http.put("/api/choices/" + choice._id, choice)
+      //         .then(function successCallback(response) {
+      //         	$scope.choiceUpdate = "Updated Choice!";
+      //         }, 
+      //       function errorCallback(response) { 
+      //       	$scope.choiceUpdate = "Could not update choice, try again!"; 
+      //       });
+      	};
     }
     
     // must be logged in to edit polls and choices
