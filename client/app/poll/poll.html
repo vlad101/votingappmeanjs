@@ -7,27 +7,27 @@
     	<!--authenticated user who created the poll can edit it-->
         <div class="col-lg-12" ng-show="isLoggedIn() && !publicUrl">
 
-    		<!--Authenticated poll creator view-->
-    		<div id="poll" ng-show="getCurrentUser()._id == poll.user_id">
-    		 
-        	   <!-- Add poll title update input form -->  
-    		  <h3 class="text-center page-header">Edit Poll</h3>
-    		  <h4>Edit Poll Title</h4>
-                <form role="form" ng-submit="updatePoll(poll)">
-                  <div class="row">
-                    <div class="input-group">
-                      <input type="text" ng-model="poll.question" class="form-control" required>
-                      <span class="input-group-btn">
-                        <input type="submit" class="btn btn-primary" value="Update">
-                      </span>
-                    </div>
+      		<!--Authenticated poll creator view-->
+      		<div id="poll" ng-show="getCurrentUser()._id == poll.user_id">
+      		 
+          	<!-- Add poll title update input form -->  
+      		  <h3 class="text-center page-header">Edit Poll</h3>
+      		  <h4>Edit Poll Title</h4>
+              <form role="form" ng-submit="updatePoll(poll)">
+                <div class="row">
+                  <div class="input-group">
+                    <input type="text" ng-model="poll.question" class="form-control" required>
+                    <span class="input-group-btn">
+                      <input type="submit" class="btn btn-primary" value="Update">
+                    </span>
                   </div>
-                  <p class="text-danger">{{ pollUpdate }}</p>
-                </form>
-                <br>
+                </div>
+                <p class="text-danger">{{ pollUpdate }}</p>
+              </form>
+              <br>
     		    
         	   <!-- Add choice input form -->
-        	    <h4>Edit Choices</h4>
+        	    <h4>Add/Edit Choices</h4>
                 <form role="form" ng-submit="addChoice()">
                   <div class="row">
                     <div class="input-group">
@@ -53,11 +53,11 @@
             
             <!--Authenticated not poll creator-->
             <div id="poll" ng-show="getCurrentUser()._id != poll.user_id">
-        	   <!-- Poll title -->  
-    		   <h3 class="text-center page-header">Edit Poll</h3>
-    		    <h2>{{ poll.question }}</h2>
-    		    
-               <!-- Choices list -->
+        	     <!-- Poll title -->  
+        		   <h3 class="text-center page-header">Edit Poll</h3>
+        		    <h2>{{ poll.question }}</h2>
+        		    
+                   <!-- Choices list -->
                <p ng-repeat="choice in choices">
                    {{ choice.choice_text }}
                </p>
@@ -69,7 +69,7 @@
           <h3 class="text-center page-header">View Poll</h3>
           
             <!--Poll question-->
-    		<h2>{{ poll.question }}</h2>
+    		  <h2>{{ poll.question }}</h2>
     		
            <!-- Choices list -->
            <p ng-repeat="choice in choices">
@@ -78,8 +78,7 @@
         </div>
     </div>
     <br>
-    <p class="text-danger">{{ choiceUpdate }}</p>
-    <p class="text-danger">{{ choiceRemove }}</p>
+    <p class="text-danger">{{ choiceUpdate }}{{ choiceRemove }}</p>
     <br>
     <button class="btn btn-default" ng-click="back()" aria-label="Back">Back</button>
 </div>

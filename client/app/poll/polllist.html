@@ -3,25 +3,81 @@
 
 <div class="container">
   <div class="row">
-		<!--<h4>{{ getCurrentUser().name }}'s Poll List</h4><br>-->
-    <div class="col-lg-12" ng-show="polls.length">
+  	<!-- Show poll if not poll add url and polls are created by user -->
+    <div class="col-lg-12" ng-show="polls.length && !addPollList">
       <h3 class="text-center page-header">Poll List</h3>
     </div>
-	<div ng-if="isLoggedIn()" ng-repeat="poll in polls">
+	<div ng-if="isLoggedIn() && !pollAddUrl" ng-repeat="poll in polls">
 		<span class="poll-item">
-        		<button ng-show="getCurrentUser()._id == poll.user_id" class="btn-xs btn-success" ng-click="go(poll._id)" aria-label="Update">Update</button>
+    		<button ng-show="getCurrentUser()._id == poll.user_id" class="btn-xs btn-success" ng-click="go(poll._id)" aria-label="Update">Update</button>
        	    <button ng-show="getCurrentUser()._id == poll.user_id" class="btn-xs btn-danger" ng-click="removePoll(poll, $index)" aria-label="Remove">Delete</button>
        	    <button class="btn-xs btn-default" aria-label="{{ poll.question }}" disabled = "disabled">{{ poll.question }}</button>
        	    <br>[Public URL: <a href="/polls/{{ poll._id }}">http://{{ host }}/polls/{{ poll._id }}</a>]
-  		<br><br>
-  	</span>
+	  		<br><br>
+	  	</span>
 	</div>
+	<!-- Must be logged in to add apoll -->
+	<div ng-if="isLoggedIn() && pollAddUrl">
+	    <div class="col-lg-12">
+	      <h3 class="text-center page-header">Add Poll</h3>
+	    </div>
+
+	   <!-- Add poll title input form -->
+	   <br>
+        <form role="form" ng-show="showAddPollForm" ng-submit="addPoll()">
+          <div class="row">
+            <div class="input-group">
+              <input type="text" name="choice" ng-model="addPollForm.question" placeholder="Add Poll TItle" class="form-control" required>
+              <span class="input-group-btn">
+                <input type="submit" class="btn btn-primary" value="Add">
+              </span>
+            </div>
+          </div>
+          <p class="text-danger">{{ pollAdd }}</p>
+        </form>
+
+		<!-- Show no polls created message if poll add url and no polls created by user -->
+		<h4 ng-show="!polls.length && !pollAddUrl">--- No polls created yet ---</h4>
+
+        <!-- Show poll title -->
+        <div id="new-poll-block" ng-show="pollTitleAdded">
+        	<h1 class="text-primary">{{ pollTitle }}</h1><br>
+
+	        <!-- Choices list -->
+	        <p ng-repeat="choice in choices">
+	           <button class="btn-sm btn-primary" disabled="disabled" aria-label="{{ choice.choice_text }}">{{ choice.choice_text }}</button>
+	        </p>
+	        <br>
+
+		   <!-- Add choice input form -->
+	        <form role="form" ng-submit="addChoice()">
+	          <div class="row">
+	            <div class="input-group">
+	              <input type="text" name="choice" ng-model="addChoiceForm.choice" placeholder="Add Choice" class="form-control" required>
+	              <span class="input-group-btn">
+	                <input type="submit" class="btn btn-primary" value="Add">
+	              </span>
+	            </div>
+	          </div>
+	          <p class="text-danger">{{ choiceAdd }}</p>
+	        </form>
+	        <br>
+
+	        <!-- To modify a poll click button -->
+	        <p class="text-center">
+	        	<button class="btn-sm btn-danger" ng-click="go(pollId)" aria-label="Back">Edit Poll & Choices</button>
+	        </p>
+        </div>
+
+	</div>
+
+	<!-- Allow guests (not logged in users) see the poll list -->
 	<div ng-if="!isLoggedIn()" ng-repeat="poll in polls">
 		<span class="poll-item">
 			<a href="/polls/{{ poll._id }}">{{ poll.question }}</a>
 		</span>
 	</div>
-	<h4 ng-show="!polls.length">--- No polls created yet ---</h4>
+
   </div>
   <p class="text-danger">{{ pollRemove }}</p>
   <br>

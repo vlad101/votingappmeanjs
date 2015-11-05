@@ -11,6 +11,10 @@ angular.module('workspaceApp')
         templateUrl: 'app/poll/polllist.html',
         controller: 'PollCtrl'
       })
+      .when('/polls/add', {
+        templateUrl: 'app/poll/polllist.html',
+        controller: 'PollCtrl'
+      })
       .when('/polls/:pollId', {
         templateUrl: 'app/poll/poll.html',
         controller: 'PollCtrl'

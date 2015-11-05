@@ -7,6 +7,13 @@ angular.module('workspaceApp')
     $scope.getCurrentUser = Auth.getCurrentUser;
     $scope.host = $location.host();
     $scope.publicUrl = true;
+    $scope.pollAddUrl = false;
+
+   // Button ng-click to go to specific path
+    // ** special case ng-click inside ng-repeat **
+	$scope.go = function (pollId) {
+      $location.path('/polls/' + pollId + '/edit');
+    };
 
     // view all polls by user id
     if($location.path().endsWith('/all')) {
@@ -23,12 +30,6 @@ angular.module('workspaceApp')
 		    	      $scope.polls = polls;
 		    	});
 	    	}
-	    	
-		   // Button ng-click to go to specific path
-		    // ** special case ng-click inside ng-repeat **
-			$scope.go = function (pollId) {
-		      $location.path('/polls/' + pollId + '/edit');
-		    };
 
 		    // Delete poll with its choices
 	        $scope.removePoll = function (poll, index) {
@@ -37,10 +38,10 @@ angular.module('workspaceApp')
 			      return;
 	            $http.delete("/api/polls/" + poll._id)
 	              .then(function successCallback(response) {
-	              		  $http.delete("/api/choices/poll/" + poll._id)
-			              .then(function successCallback(response) {
+              		  $http.delete("/api/choices/poll/" + poll._id)
+		              .then(function successCallback(response) {
 			              $scope.polls.splice(index, 1);
-			              $scope.pollRemove = "Poll Deleted";
+			              $scope.pollRemove = "Poll Deleted!";
 		           }, function errorCallback(response) { 
 		           	$scope.pollRemove = "Could not delete choices, try again!"; 
 		           });
@@ -75,7 +76,8 @@ angular.module('workspaceApp')
     if($scope.isLoggedIn()) {
 	      if($location.path().endsWith('/edit')) {   // edit poll by poll id
 	      
-	      $scope.publicUrl = false;
+	      	// set public url to true since only poll creator can modify it
+	      	$scope.publicUrl = false;
 	      
 		    // Update poll
 	        $scope.updatePoll = function (poll) {
@@ -166,6 +168,85 @@ angular.module('workspaceApp')
 	              });
 	      	};
 	    }
+
+	   	if($location.path().endsWith('/polls/add')) {   // add poll
+	   		
+			$scope.showAddPollForm = true;
+
+	   		// set add poll url to true
+	   		$scope.pollAddUrl = true;
+
+		    // Add poll
+		    // Form add poll
+		    $scope.addPollForm = {
+		       question: ""
+		     };
+		        
+		    $scope.addPoll = function () {
+		      
+	    	    if(!$scope.addPollForm.question)
+	    	      return;
+		      
+		        var poll = {
+		        	"user_id" :  $scope.getCurrentUser()._id,
+		          	"question" : $scope.addPollForm.question
+		        };
+		        
+		        $http.post("/api/polls", poll)
+		          .then(function successCallback(responsePoll) {
+		            
+		          	// Poll added success
+		          	$scope.pollTitleAdded = true;
+
+		            // Hide add poll title form
+		            $scope.showAddPollForm = false;
+
+		            // Show title
+		            $scope.pollTitle = responsePoll.data.question;
+
+		            // Show poll id
+		            $scope.pollId = responsePoll.data._id;
+
+			  		// get choices by poll id
+			  	    $http.get('/api/choices/poll/' +  $scope.pollId).success(function(choices) {
+			  	      $scope.choices = choices;
+			  	    });
+
+		        }, function errorCallback(response) { 
+		          	$scope.pollAdd = "Could not add choice, try again!";
+		        });
+		        $scope.addPollForm.question = "";
+		    
+		    };
+
+		    // Add choice
+		    // Form add choice
+	     	$scope.addChoiceForm = {
+	       		choice: ""
+	       		};
+	        
+		    $scope.addChoice = function () {
+		      
+	    	    if(!$scope.addChoiceForm.choice)
+	    	      return;
+		      
+		        var choice = {
+		          "poll_id" : $scope.pollId,
+		          "choice_text": $scope.addChoiceForm.choice,
+		          "vote_count" : 0,
+		          "active" : true
+		        };
+		        
+		        $http.post("/api/choices", choice)
+		        .then(function successCallback(responseChoice) {
+		            $scope.choices.push(responseChoice.data);
+		          }, function errorCallback(response) { 
+		          	$scope.choiceAdd = "Could not add choice, try again!";
+		          });
+		        $scope.addChoiceForm.choice = "";
+		    
+		    };
+	   	}
 	}
 })
 .run(function ($rootScope, $location) {
