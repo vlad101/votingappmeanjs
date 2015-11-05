@@ -41,7 +41,7 @@
 
         <!-- Show poll title -->
         <div id="new-poll-block" ng-show="pollTitleAdded">
-        	<h1 class="text-primary">{{ pollTitle }}</h1><br>
+        	<h1 class="text-primary">{{ pollTitle }}</h1>
 
 	        <!-- Choices list -->
 	        <p ng-repeat="choice in choices">
@@ -62,6 +62,9 @@
 	          <p class="text-danger">{{ choiceAdd }}</p>
 	        </form>
 	        <br>
+
+        	<!-- Public url -->
+        	<h3>Public URL: <a href="/polls/{{ pollId }}">http://{{ host }}/polls/{{ pollId }}</a></h3><br>
 
 	        <!-- To modify a poll click button -->
 	        <p class="text-center">
