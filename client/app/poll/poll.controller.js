@@ -40,8 +40,13 @@ angular.module('workspaceApp')
 	              		  $http.delete("/api/choices/poll/" + poll._id)
 			              .then(function successCallback(response) {
 			              $scope.polls.splice(index, 1);
-		           }, function errorCallback(response) { alert("Could not delete choices, try again!"); });
-	            }, function errorCallback(response) { alert("Could not delete poll, try again!"); });
+			              $scope.pollRemove = "Poll Deleted";
+		           }, function errorCallback(response) { 
+		           	$scope.pollRemove = "Could not delete choices, try again!"; 
+		           });
+	            }, function errorCallback(response) { 
+	            	$scope.pollRemove = "Could not delete poll, try again!"; 
+	            });
 	      	};
 
         } else {
@@ -75,12 +80,21 @@ angular.module('workspaceApp')
 		    // Update poll
 	        $scope.updatePoll = function (poll) {
 
+		    $scope.pollUpdate = "";
+		    $scope.choiceAdd = "";
+		    $scope.choiceUpdate = "";
+		    $scope.choiceRemove = "";
+
 		      if(!poll.question)
 		        return;
 
 	            $http.put("/api/polls/" + poll._id, poll)
-	              .then(function successCallback(response) {}, 
-	            function errorCallback(response) { alert("Could not update poll title, try again!"); });
+	              .then(function successCallback(response) {
+	              	$scope.pollUpdate = "Updated Title!";
+	              }, 
+	            function errorCallback(response) { 
+	            	$scope.pollUpdate = "Could not update poll title, try again!"; 
+	            });
 	      	};
 	      
 		    // Add choice
@@ -104,7 +118,10 @@ angular.module('workspaceApp')
 		        $http.post("/api/choices", choice)
 		        .then(function successCallback(response) {
 		            $scope.choices.push(response.data);
-		          }, function errorCallback(response) { alert("Could not add choice, try again!"); });
+		            $scope.choiceAdd = "Added choice!";
+		          }, function errorCallback(response) { 
+		          	$scope.choiceAdd = "Could not add choice, try again!";
+		          });
 		        $scope.addChoiceForm.choice = "";
 		    
 		    };
@@ -112,16 +129,30 @@ angular.module('workspaceApp')
 		    // Update choice
 	        $scope.updateChoice = function (choice) {
 
+			    $scope.pollUpdate = "";
+			    $scope.choiceAdd = "";
+			    $scope.choiceUpdate = "";
+			    $scope.choiceRemove = "";
+
 		      if(!choice.choice_text)
 		        return;
 
 	            $http.put("/api/choices/" + choice._id, choice)
-	              .then(function successCallback(response) {}, 
-	            function errorCallback(response) { alert("Could not update choice, try again!"); });
+	              .then(function successCallback(response) {
+	              	$scope.choiceUpdate = "Updated Choice!";
+	              }, 
+	            function errorCallback(response) { 
+	            	$scope.choiceUpdate = "Could not update choice, try again!"; 
+	            });
 	      	};
 
 		    // Delete choice
 	        $scope.removeChoice = function (choice, index) {
+
+			    $scope.pollUpdate = "";
+			    $scope.choiceAdd = "";
+			    $scope.choiceUpdate = "";
+			    $scope.choiceRemove = "";
 
 		      if(!choice.choice_text)
 		        return;
@@ -129,7 +160,10 @@ angular.module('workspaceApp')
 	            $http.delete("/api/choices/" + choice._id)
 	              .then(function successCallback(response) {
 	              	$scope.choices.splice(index, 1);
-	              }, function errorCallback(response) { alert("Could not delete choice, try again!"); });
+	              	$scope.choiceRemove = "Deleted Choice!";
+	              }, function errorCallback(response) { 
+	              	$scope.choiceRemove = "Could not delete choice, try again!"; 
+	              });
 	      	};
 	    }
 	}
