@@ -3,16 +3,16 @@
 
 <div class="container">
     <div class="row">
-    	<h5 ng-show="!pollId.length">--- Something Went Wrong ---</h5>
-    	<!--authenticated user who created the poll can edit it-->
+      <h5 ng-show="!pollId.length">--- Something Went Wrong ---</h5>
+      <!--authenticated user who created the poll can edit it-->
         <div class="col-lg-12" ng-show="isLoggedIn() && !publicUrl">
 
-      		<!--Authenticated poll creator view-->
-      		<div id="poll" ng-show="getCurrentUser()._id == poll.user_id">
-      		 
-          	<!-- Add poll title update input form -->  
-      		  <h3 class="text-center page-header">Edit Poll</h3>
-      		  <h4>Edit Poll Title</h4>
+          <!--Authenticated poll creator view-->
+          <div id="poll" ng-show="getCurrentUser()._id == poll.user_id">
+           
+            <!-- Add poll title update input form -->  
+            <h3 class="text-center page-header">Edit Poll</h3>
+            <h4>Edit Poll Title</h4>
               <form role="form" ng-submit="updatePoll(poll)">
                 <div class="row">
                   <div class="input-group">
@@ -25,9 +25,9 @@
                 <p class="text-danger">{{ pollUpdate }}</p>
               </form>
               <br>
-    		    
-        	   <!-- Add choice input form -->
-        	    <h4>Add/Edit Choices</h4>
+            
+             <!-- Add choice input form -->
+              <h4>Add/Edit Choices</h4>
                 <form role="form" ng-submit="addChoice()">
                   <div class="row">
                     <div class="input-group">
@@ -52,11 +52,11 @@
             </div>
 
             <div id="poll" ng-show="getCurrentUser()._id != poll.user_id">
-        		    <h2>-- Invalid Poll --</h2>
+                <h2>-- Invalid Poll --</h2>
             </div>
         </div>
         
-    	<!-- Authenticated user who did not create poll and not authenticated users can view poll -->
+      <!-- Authenticated user who did not create poll and not authenticated users can view poll -->
         <div class="col-lg-12" ng-show="!isLoggedIn() || publicUrl">
           <h3 class="text-center page-header">View Poll</h3>
           

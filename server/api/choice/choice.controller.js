@@ -51,6 +51,20 @@ exports.update = function(req, res) {
   });
 };
 
+// Updates an existing choice vote count by one in the DB.
+exports.updateVoteCount = function(req, res) {
+  if(req.body._id) { delete req.body._id; }
+  Choice.findById(req.params.id, function (err, choice) {
+    if (err) { return handleError(res, err); }
+    if(!choice) { return res.status(404).send('Not Found'); }
+    choice.vote_count++;
+    choice.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.status(200).json(choice);
+    });
+  });
+};
+
 // Deletes a choice from the DB.
 exports.destroy = function(req, res) {
   Choice.findById(req.params.id, function (err, choice) {

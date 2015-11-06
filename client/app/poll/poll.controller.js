@@ -76,42 +76,32 @@ angular.module('workspaceApp')
   		  $scope.poll = poll;
   		 });
   
-  			// get choices by poll id
+  		// Get choices by poll id
   	    $http.get('/api/choices/poll/' +  $scope.pollId).success(function(choices) {
   	      $scope.choices = choices;
   	    });
 
-		// Update choice
-        $scope.submitChoice = function (choice) {
+		// Update choice vote count
+        $scope.submitChoice = function (choiceId) {
 
-        	if(!choice) {
-	        	console.log("could not submit choice!!!");
+        	if(!choiceId) {
+	        	$scope.choiceSubmit = "Could not submit vote!";
         	} else {
-	        	console.log(choice);
-	        	/*
-					var update = {};
-					update['readersNum.' + index] = 1; // update now has property like `readersNum.3`
-					Posts.update({"readerID":readerID},{$inc: update},{upsert:false,safe:true}, function(err){ console.log(err); });
-	        	*/
+	            $http.put("/api/choices/vote/" + choiceId)
+	              .then(function successCallback(response) {
+	              	$scope.choiceSubmit = "Submitted vote!";
 
-	        	/*
-					Model.findOne({ name: 'borne' }, function (err, doc){
-					  doc.name = 'jason borne';
-					  doc.visits.$inc();
-					  doc.save();
-					});
-	        	*/
+	              	// GOOGLE PIE CHART
+
+
+
+	              	/////
+
+	              }, 
+	            function errorCallback(response) { 
+	            	$scope.choiceSubmit = "Could not submit vote, try again!"; 
+	            });
 	        }
-	     //  if(!choice.choice_text)
-	     //    return;
-
-      //       $http.put("/api/choices/" + choice._id, choice)
-      //         .then(function successCallback(response) {
-      //         	$scope.choiceUpdate = "Updated Choice!";
-      //         }, 
-      //       function errorCallback(response) { 
-      //       	$scope.choiceUpdate = "Could not update choice, try again!"; 
-      //       });
       	};
     }
     
@@ -306,3 +296,4 @@ angular.module('workspaceApp')
     };
 
 });
+
