@@ -21,8 +21,11 @@ angular.module('workspaceApp')
 	
    // Button ng-click to go to specific path
     // ** special case ng-click inside ng-repeat **
-	$scope.go = function (pollId) {
-      $location.path('/polls/' + pollId + '/edit');
+	$scope.go = function (action, pollId) {
+		if(action == "update")
+      		$location.path('/polls/' + pollId + '/edit');
+      	if(action =="result")
+      		$location.path('/polls/' + pollId);
     };
 
     // view all polls by user id
@@ -78,8 +81,16 @@ angular.module('workspaceApp')
   
   		// Get choices by poll id
   	    $http.get('/api/choices/poll/' +  $scope.pollId).success(function(choices) {
-  	      $scope.choices = choices;
+  	      	$scope.choices = choices;
+
+  	      	// If the user is the poll creator, allow the user see results
+	  	    if($scope.isLoggedIn() && $scope.getCurrentUser()._id == $scope.poll.user_id) {   
+		  	    $scope.choiceSubmitSuccess = true;
+		  	    drawHighChart(choices, 0, $scope.poll.question);
+		  	}
   	    });
+
+  	    $scope.choiceSubmitSuccess = false;
 
 		// Update choice vote count
         $scope.submitChoice = function (choiceId) {
@@ -91,11 +102,16 @@ angular.module('workspaceApp')
 	              .then(function successCallback(response) {
 	              	$scope.choiceSubmit = "Submitted vote!";
 
-	              	// GOOGLE PIE CHART
-
-
-
-	              	/////
+			  		// Get choices by poll id
+			  	    $http.get('/api/choices/poll/' +  $scope.pollId).success(function(choices) {
+			  	      
+			  	      if(choices) {
+			  	      	drawHighChart(choices, choiceId, $scope.poll.question);
+			  	      	$scope.choiceSubmitSuccess = true;
+			  	      }
+			  	      else
+			  	      	$scope.choiceSubmit = "Something went wrong!";
+			  	    });
 
 	              }, 
 	            function errorCallback(response) { 
@@ -297,3 +313,59 @@ angular.module('workspaceApp')
 
 });
 
+function drawHighChart(choiceList, selectedChoice, pollName) {
+
+	$(function () {
+
+		// Create an empty dict which will hold choice text and vote count
+		// The selected value will sliced and selected
+
+		var data = [];
+
+		for(var i in choiceList) {
+			var list = {	
+				"name"	: choiceList[i].choice_text,
+			    "y"		: choiceList[i].vote_count
+			};
+			if(choiceList[i]._id == selectedChoice) {
+			    list["sliced"] = true;
+				list["selected"] = true;
+			}
+			data.push(list);
+		};
+
+	    $('#container').highcharts({
+	        chart: {
+	            plotBackgroundColor: null,
+	            plotBorderWidth: null,
+	            plotShadow: false,
+	            type: 'pie'
+	        },
+	        title: {
+	            text: pollName
+	        },
+	        tooltip: {
+	            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	        },
+	        plotOptions: {
+	            pie: {
+	                allowPointSelect: true,
+	                cursor: 'pointer',
+	                dataLabels: {
+	                    enabled: true,
+	                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+	                    style: {
+	                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+	                    }
+	                },
+	                showInLegend: true
+	            }
+	        },
+	        series: [{
+	            name: 'Votes',
+	            colorByPoint: true,
+	            data: data
+	        }]
+	    });
+	});
+}
