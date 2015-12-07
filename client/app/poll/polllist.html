@@ -4,11 +4,9 @@
 <div class="container">
   <div class="row">
   	<!-- Show poll if not poll add url and polls are created by user -->
-    <div class="col-lg-12" ng-show="polls.length && !addPollList">
-      <h3 class="text-center page-header">Poll List</h3>
-    </div>
-    <div class="col-lg-12" ng-show="!polls.length && addPollList">
-      <h3>-- No polls added --</h3>
+  	<h3 ng-show="!pollAddUrl" class="text-center page-header">Poll List</h3>
+    <div class="col-lg-12" ng-show="polls.length == 0">
+      	<h3>-- No polls added --</h3>
     </div>
 	<div ng-if="isLoggedIn() && !pollAddUrl" ng-repeat="poll in polls">
 		<span class="poll-item">
@@ -73,8 +71,8 @@
 	        <br>
 
 	        <!-- To modify a poll click button -->
-	        <p>
-	        	<button class="btn-sm btn-danger" ng-click="go(pollId)" aria-label="Back">Edit Poll & Choices</button>
+	        <p ng-show="choices.length != 0">
+	        	<button class="btn-sm btn-danger" ng-click="go('update', pollId)" aria-label="Back">Edit Poll & Choices</button>
 	        </p>
         </div>
 

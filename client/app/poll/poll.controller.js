@@ -334,7 +334,7 @@ function drawHighChart(choiceList, selectedChoice, pollName) {
 			data.push(list);
 		};
 
-	    $('#container').highcharts({
+	    $('#highchart').highcharts({
 	        chart: {
 	            plotBackgroundColor: null,
 	            plotBorderWidth: null,

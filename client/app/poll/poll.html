@@ -65,7 +65,9 @@
 
             <div class="row">
               <!--Poll question-->
-                <div ng-hide="!choiceSubmitSuccess" id="container" style="min-width: 350px; height: 300px; max-width: 310px;border:1px solid;"></div>
+                <div id="chart-field" ng-show="choices.length != 0">
+                  <div ng-hide="!choiceSubmitSuccess" id="highchart" style="min-width: 350px; height: 300px; max-width: 310px;border:1px solid;"></div>
+                </div>
               <h2>{{ poll.question }}</h2>
 
                 <!-- Submit button form -->
@@ -74,9 +76,13 @@
                         <label><input type="radio" name="choice" ng-model="$parent.choice" value="{{ choice._id }}" ng-checked="false" >{{ choice.choice_text }}</label>
                     </h4>
                 </span>
-                <span ng-show="!choiceSubmitSuccess" class="input-group-btn">
-                  <input type="submit" class="btn btn-success" value="Submit">
-                </span>
+                  <div id="chart-field" ng-show="choices.length == 0">
+                    <p>-- No Choices Added --</p>
+                  </div>
+                  <span ng-show="!choiceSubmitSuccess && choices.length != 0" class="input-group-btn">
+                    <input type="submit" class="btn btn-success" value="Submit">
+                  </span>
+
                 <p class="text-danger">{{ choiceSubmit }}</p>
             </div>
           </form>
